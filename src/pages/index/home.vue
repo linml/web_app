@@ -10,25 +10,25 @@
       </div>
       <div class="menu">
         <ul>
-          <router-link to='/openHall'>
+          <router-link to='/Home/Detail'>
             <li>
               <span><img src="../../assets/imgs/deposit.svg"></span>
               <span>存取款</span>
             </li>
           </router-link>
-          <router-link to='/choseHall'>
+          <router-link to='/Home/Detail'>
             <li>
               <span><img src="../../assets/imgs/youhui.svg"></span>
               <span>优惠活动</span>
             </li>
           </router-link>
-          <router-link to='/history'>
+          <router-link to='/Home/Detail'>
             <li>
               <span><img src="../../assets/imgs/zoushi.svg"></span>
               <span>走势</span>
             </li>
           </router-link >
-          <router-link to='/person'>
+          <router-link to='/Home/Detail'>
             <li>
               <span><img src="../../assets/imgs/wenti.svg"></span>
               <span>常见问题</span>
