@@ -18,3 +18,9 @@ export const login = (params) => post(`${apiUrl}${API_V1}/login`, params)
  * @returns {*}
  */
 export const findHallLotto = () => fetch(`${apiUrl}${API_V1}/hall/lotto/list`)
+
+/**
+ * 获取主页信息
+ * @returns {*}
+ */
+export const homeInit = () => fetch(`${apiUrl}${API_V1}/home/init`)
