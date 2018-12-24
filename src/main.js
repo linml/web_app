@@ -3,9 +3,10 @@
 /*eslint-disable*/
 import Vue from 'vue'
 import App from './App'
-import Vuex from 'vuex'
+// import Vuex from 'vuex'
 import store from './store'
 import router from './router'
+import * as filters from './filter/index'
 // import Mint from 'mint-ui'
 import {Button, Swipe, SwipeItem} from 'mint-ui'
 import 'mint-ui/lib/style.css'
@@ -47,12 +48,16 @@ window.addEventListener('popstate', function(e) {
 
 
 // Vue.use(Mint)
-Vue.use(Vuex)
+// Vue.use(Vuex)
 Vue.use(VueScroller)
 
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 Vue.component(Button.name, Button);
+
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key]);
+});
 
 
 Vue.config.productionTip = false

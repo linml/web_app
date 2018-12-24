@@ -7,19 +7,21 @@
       <scroller class="page-content" :on-refresh="refresh" ref="scroller" >
         <ul style="padding: 0 0 1rem 0;">
           <li v-for="item in lottoInfoList" :key="item.lotto_id">
-            <div class="cell-container">
-              <div class="leftbox">
-                <img :src="item.img_url">
+            <router-link tag="a" :to="/bet/+item.lotto_id">
+              <div class="cell-container">
+                <div class="leftbox">
+                  <img :src="item.img_url">
+                </div>
+                <div class="midbox fl">
+                  <p class="fontcolor1">{{item.name}} </p>
+                  <p class="label" v-if="item.issue !== ''">第{{item.issue}}期</p>
+                  <p class="label" v-else>暂无期号</p>
+                </div>
+                <div class="rightbox">
+                  <i class="mint-cell-allow-right"></i>
+                </div>
               </div>
-              <div class="midbox fl">
-                <p>{{item.name}} </p>
-                <p class="label" v-if="item.issue !== ''">第{{item.issue}}期</p>
-                <p class="label" v-else>暂无期号</p>
-              </div>
-              <div class="rightbox">
-                <i class="mint-cell-allow-right"></i>
-              </div>
-            </div>
+            </router-link>
           </li>
         </ul>
       </scroller>
@@ -77,6 +79,7 @@ export default {
         if (data.code === 0) {
           this.lottoInfoList = data.data
         } else {
+          console.log(data.msg)
         }
       }).catch(() => {
       })
@@ -152,5 +155,8 @@ export default {
   }
   .fl{
     float:left;
+  }
+  .fontcolor1{
+    color: @base-font-color;
   }
 </style>

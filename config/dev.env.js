@@ -4,6 +4,6 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  BASE_URL: '"http://192.168.43.11:9500"',
-  API_URL: '"http://192.168.43.11:9500"'
+  // BASE_URL: '"http://192.168.43.11:9500"',
+  // API_URL: '"http://192.168.43.11:9500"'
 })

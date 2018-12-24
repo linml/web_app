@@ -45,11 +45,13 @@
       <div class="shop_lotto">
         <ul>
           <li class="cellCate fl" v-for="item in lotto_info_list" :key="item.lotto_id">
-            <p class="cateImg"><img :src="item.img_url"></p>
-            <div class="midbox">
-              <p>{{item.name}}</p>
-              <p class="label" >{{item.name}}</p>
-            </div>
+            <router-link tag="a" :to="/bet/+item.lotto_id">
+              <div class="cateImg"><img :src="item.img_url"></div>
+              <div class="midbox">
+                <p>{{item.name}}</p>
+                <p class="label" >{{item.name}}</p>
+              </div>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -176,7 +178,7 @@ export default {
   height: auto;
   margin-top: 0.2rem;
   background-color: white;
-  border-bottom: solid #ededed 1px;
+  border-bottom: solid @base-color-gray 0.01rem;
   .shop_header{
     width: 100%;
     height: 0.7rem;
@@ -205,36 +207,49 @@ export default {
     width: 50%;
     height: 2rem;
     background: white;
-    border-bottom: solid #ededed 1px;
+    border-bottom: solid @base-color-gray 0.01rem;
     border-right:1px solid #00000;
     display:flex;
     align-items:center;
   }
   .cellCate{
-    .cateImg{
-      width: 40%;
-      float: left;
-      img{
-        margin-left: 0.2rem;
-        width: 1.5rem;
-        height: 1.5rem;
-        float:left;
-      }
-    }
-    .midbox{
+    a{
+      /*border: 0.01rem solid green;*/
+      width: 100%;
       height: 100%;
-      width: 60%;
-      float:left;
-      p{
-        font-size: 0.4rem;
-        text-align: left;
-        margin-top: 0.4rem;
+      .cateImg{
+        width: 40%;
+        height: 100%;
+        float: left;
+        text-align:center;
+        display:table-cell;
+        vertical-align:middle;
+        img{
+          /*border: 0.01rem solid red;*/
+          /*margin-left: 0.2rem;*/
+          width: 1.5rem;
+          height: 1.5rem;
+          margin-top: 0.25rem;
+          display: inline-block;
+          vertical-align: middle;
+        }
       }
-      .label{
-        margin-top: 0.05rem;
-        font-size: 0.35rem;
-        color:#9c9c9c;
-        word-wrap:break-word;
+      .midbox{
+        height: 100%;
+        width: 60%;
+        float:left;
+        p{
+          font-size: 0.4rem;
+          text-align: left;
+          margin-top: 0.4rem;
+          color: @base-font-color;
+        }
+        .label{
+          margin-top: 0.05rem;
+          font-size: 0.35rem;
+          color:#9c9c9c;
+          word-wrap:break-word;
+        }
       }
     }
   }

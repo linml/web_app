@@ -24,3 +24,17 @@ export const findHallLotto = () => fetch(`${apiUrl}${API_V1}/hall/lotto/list`)
  * @returns {*}
  */
 export const homeInit = () => fetch(`${apiUrl}${API_V1}/home/init`)
+
+/**
+ * 获取彩票具体信息
+ * @param params
+ * @returns {*}
+ */
+export const getBetPlayInfo = (params) => fetch(`${apiUrl}${API_V1}/bet/play_info`, params)
+
+/**
+ * 获取彩票当前期信息
+ * @param params lotto_id
+ * @returns {*}
+ */
+export const getCurrIssue = (params) => fetch(`${apiUrl}${API_V1}/lotto/curr_issue_info`, params)

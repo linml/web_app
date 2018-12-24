@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <transition>
-      <router-view style="height: 100px"></router-view>
+      <router-view style="height: 100%"></router-view>
     </transition>
     <div class="nav-footer">
       <footer>

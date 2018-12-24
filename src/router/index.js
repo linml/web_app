@@ -63,6 +63,11 @@ export default new Router({
       path: '/Home/Detail',
       name: 'Detail',
       component: (resolve) => require(['@/pages/detail'], resolve)
+    },
+    {
+      path: '/bet/:id',
+      name: 'Detail',
+      component: (resolve) => require(['@/pages/bet/index'], resolve)
     }
   ]
 })

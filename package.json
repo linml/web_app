@@ -16,6 +16,7 @@
     "mint-ui": "^2.2.13",
     "qs": "^6.6.0",
     "vue": "^2.5.2",
+    "vue-burger-menu": "^1.0.9",
     "vue-router": "^3.0.1",
     "vue-scroller": "^2.2.4",
     "vue2-better-scroll": "^1.0.7",
