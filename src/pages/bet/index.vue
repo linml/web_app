@@ -1,5 +1,15 @@
 <template>
   <div>
+    <drawer :show="drawerShow"
+            pos="left"
+            tran="overlay"
+            @change-show="changeDrawerShow"
+            @on-hide="onHide"
+            @on-show="onShow">
+      <div class="layout" slot="drawer" >
+        <div>走势</div>
+        <div>图</div>
+      </div>
     <common-header :tittle="tittle" :showmore="true"></common-header>
     <div class="page-content">
       <div class="issue_info">
@@ -34,21 +44,26 @@
         </div>
         <div v-else></div>
       </div>
-      <div class="content"></div>
+      <div class="content">
+        <button v-on:click="drawerToggle">toggle</button>
+      </div>
       <div class="bet_area_info">
           <div class="cellbasebet qingkongx">清空选项</div>
-          <div class="cellbasebet zoushi">走势</div>
-          <div class="cellbasebet lengre">冷热排行</div>
+          <div class="cellbasebet zoushi"  v-on:click="drawerToggle">走势</div>
+          <div class="cellbasebet lengre"  v-on:click="drawerToggle">冷热排行</div>
           <div class="cellbasebet xiazhu">下注</div>
       </div>
     </div>
+    </drawer>
   </div>
 </template>
 
 <script>
+import { MessageBox } from 'mint-ui'
 import commonHeader from '@/components/common-header'
 import {getBetPlayInfo, getCurrIssue} from '@/api/index'
 import {str2fromttime} from '@/filter/index'
+import Drawer from '@/components/drawer.vue'
 export default {
   data () {
     return {
@@ -62,13 +77,15 @@ export default {
         min: 0,
         sec: 0
       },
-      cdTimer: null
+      cdTimer: null,
+      drawerShow: false
     }
   },
   created () {
   },
   components: {
-    commonHeader
+    commonHeader,
+    Drawer
   },
   mounted: function () {
     this.lotto_id = this.$route.params.id
@@ -127,9 +144,14 @@ export default {
     },
     countdown: function (endTime, callback) {
       let tf = str2fromttime(endTime)
+      // MessageBox('Notice', tf)
       const end = Date.parse(new Date(tf))
       const now = Date.parse(new Date())
       const msec = end - now
+      // MessageBox('Notice', end + '-' + now)
+      // if (msec > 0) {
+      //   MessageBox('Notice', end)
+      // }
       // let day = parseInt(msec / 1000 / 60 / 60 / 24)
       // console.log(end, now)
       let hr = parseInt(msec / 1000 / 60 / 60)
@@ -168,6 +190,19 @@ export default {
         }
       }).catch(() => {
       })
+    },
+    drawerToggle () {
+      this.drawerShow = !this.drawerShow
+    },
+    onHide () {
+      console.log('hide')
+    },
+    changeDrawerShow (state) {
+      this.drawerShow = state
+      console.log('drawer was changed from components')
+    },
+    onShow () {
+      console.log('show')
     }
   }
 }
@@ -320,5 +355,36 @@ export default {
   }
   .fztitle{
     font-size: 0.43rem;
+  }
+  button, input[type="button"], a.button {
+    color: #fff;
+    background-color: #3779d0;
+    border: 0;
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 0px 8px;
+    height: 40px;
+    min-width: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    display: inline-block;
+    outline: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+    -webkit-transition: all;
+    -moz-transition: all;
+    transition: all;
+    -webkit-transition-timing-function: linear;
+    -moz-transition-timing-function: linear;
+    transition-timing-function: linear;
+    -webkit-transition-duration: .2s;
+    -moz-transition-duration: .2s;
+    transition-duration: .2s;
+  }
+  .layout{
+    width: 8rem;
   }
 </style>
