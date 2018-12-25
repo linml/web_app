@@ -4,7 +4,18 @@
         <span v-if="showback" @click="back" class="icon-back"></span>
       </div>
       <div class="header-tittle">
-        <span v-if="!showinput">{{tittle}}</span>
+        <span v-if="headertype === 'cusinput'">
+          <cus-input></cus-input>
+        </span>
+        <span v-if="headertype === 'methodgroup'">
+          <lotto-method-group
+            :lottoname="headerlottoname"
+            :mglist="mglist"
+            :currGroupInfo="currgroup"
+            @currGroupInfoClicked="currGroupInfoClicked"
+          ></lotto-method-group>
+        </span>
+        <span v-else>{{tittle}}</span>
       </div>
       <div class="right-icon">
         <span v-if="showmore" class="icon"></span>
@@ -13,9 +24,14 @@
 </template>
 
 <script>
+import cusInput from '@/components/cus-input'
+import lottoMethodGroup from '@/components/lotto-method-group'
 export default {
   data () {
-    return {}
+    return {
+      aaa: ''
+      // currgroup: {}
+    }
   },
   props: {
     showright: {
@@ -34,6 +50,10 @@ export default {
       type: String,
       default: '标题'
     },
+    headertype: {
+      type: String,
+      default: 'title'
+    },
     showback: {
       type: Boolean,
       default: true
@@ -41,14 +61,39 @@ export default {
     showmore: {
       type: Boolean,
       default: false
+    },
+    headerlottoname: {
+      type: String,
+      default: '暂无玩法'
+    },
+    currgroup: {
+      type: Object,
+      default: function () {
+        return {}
+      }
+    },
+    mglist: {
+      type: Array,
+      default: function () {
+        return []
+      }
     }
   },
   methods: {
     back () {
       this.$router.goBack()
+    },
+    currGroupInfoClicked: function (currInfo) {
+      this.$emit('currGroupInfoClicked', currInfo)
     }
   },
+  mounted () {
+  },
   components: {
+    cusInput,
+    lottoMethodGroup
+  },
+  watch: {
   }
 }
 </script>

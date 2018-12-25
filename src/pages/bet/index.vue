@@ -10,7 +10,12 @@
         <div>走势</div>
         <div>图</div>
       </div>
-    <common-header :tittle="tittle" :showmore="true"></common-header>
+    <common-header headertype="methodgroup"
+                   :showmore="true"
+                   :mglist="methodGroupList"
+                   :currgroup="currMethodGroup"
+                   :aaa="33334444"
+                   @currGroupInfoClicked="currGroupInfoClicked"></common-header>
     <div class="page-content">
       <div class="issue_info">
         <div class="info">
@@ -45,29 +50,29 @@
         <div v-else></div>
       </div>
       <div class="content">
-        <button v-on:click="drawerToggle">toggle</button>
       </div>
       <div class="bet_area_info">
           <div class="cellbasebet qingkongx">清空选项</div>
           <div class="cellbasebet zoushi"  v-on:click="drawerToggle">走势</div>
           <div class="cellbasebet lengre"  v-on:click="drawerToggle">冷热排行</div>
-          <div class="cellbasebet xiazhu">下注</div>
+          <div class="cellbasebet xiazhu" v-on:click="bet">下注</div>
       </div>
     </div>
     </drawer>
+    <!--<popup></popup>-->
   </div>
 </template>
 
 <script>
-import { MessageBox } from 'mint-ui'
+// import { MessageBox } from 'mint-ui'
 import commonHeader from '@/components/common-header'
 import {getBetPlayInfo, getCurrIssue} from '@/api/index'
 import {str2fromttime} from '@/filter/index'
-import Drawer from '@/components/drawer.vue'
+import Drawer from '@/components/drawer'
 export default {
   data () {
     return {
-      tittle: '下单',
+      tittle: '',
       curr_issue_info: {},
       last_issue_info: {},
       lotto_info: {},
@@ -78,19 +83,23 @@ export default {
         sec: 0
       },
       cdTimer: null,
-      drawerShow: false
+      drawerShow: false,
+      currMethodGroup: {
+        group_name: '333'
+      },
+      methodGroupList: []
     }
   },
   created () {
+    this.lotto_id = this.$route.params.id
+    console.log(this.lotto_id)
+    this.refreshBetPlayInfo(this.run_stop_time_count_down)
   },
   components: {
     commonHeader,
     Drawer
   },
   mounted: function () {
-    this.lotto_id = this.$route.params.id
-    console.log(this.lotto_id)
-    this.refreshBetPlayInfo(this.run_stop_time_count_down)
   },
   beforeDestroy () {
     clearTimeout(this.cdTimer)
@@ -106,6 +115,9 @@ export default {
     }
   },
   methods: {
+    currGroupInfoClicked: function (currInfo) {
+      this.currMethodGroup = currInfo
+    },
     run_stop_time_count_down () {
       let endTime = this.curr_issue_info.stop_time
       this.countdown(endTime, this.run_close_time_count_down)
@@ -133,6 +145,10 @@ export default {
           this.lotto_info = data.data.lotto_info
           this.curr_issue_info = data.data.curr_issue
           this.last_issue_info = data.data.last_issue
+          this.methodGroupList = data.data.method_group
+          if (this.methodGroupList) {
+            this.currMethodGroup = this.methodGroupList[0]
+          }
           if (typeof callback === 'function') {
             callback()
           }
@@ -193,6 +209,10 @@ export default {
     },
     drawerToggle () {
       this.drawerShow = !this.drawerShow
+    },
+    bet () {
+      console.log(this.sheetVisible)
+      this.sheetVisible = !this.sheetVisible
     },
     onHide () {
       console.log('hide')

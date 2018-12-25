@@ -7,7 +7,7 @@ import App from './App'
 import store from './store'
 import router from './router'
 import * as filters from './filter/index'
-// import Mint from 'mint-ui'
+import Mint from 'mint-ui'
 import {Button, Swipe, SwipeItem} from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import FastClick from 'fastclick'
@@ -47,7 +47,7 @@ window.addEventListener('popstate', function(e) {
 }, false)
 
 
-// Vue.use(Mint)
+Vue.use(Mint)
 // Vue.use(Vuex)
 Vue.use(VueScroller)
 
