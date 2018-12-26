@@ -81,7 +81,15 @@ export default {
       font-size: 0.35rem;
       color: @base-font-color;
       background: @base-color-white;
-      border-bottom: solid @base-color-gray 0.01rem;
+      border-bottom: solid @base-color-gray 1px;
+    }
+    ul li:nth-child(odd) {
+      margin-right: 4%;
+    }
+    ul li.on {
+      background-image: linear-gradient(left, #F0DDAE 0%, #DCB976 100%);
+      background-image: -webkit-linear-gradient(left, #F0DDAE 0%, #DCB976 100%);
+      color: #2F2122;
     }
   }
 </style>

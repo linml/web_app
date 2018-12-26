@@ -207,7 +207,7 @@ export default {
     width: 50%;
     height: 2rem;
     background: white;
-    border-bottom: solid @base-color-gray 0.01rem;
+    border-bottom: solid @base-color-gray 1px;
     border-right:1px solid #00000;
     display:flex;
     align-items:center;

@@ -10,7 +10,7 @@ import * as filters from './filter/index'
 import Mint from 'mint-ui'
 import {Button, Swipe, SwipeItem} from 'mint-ui'
 import 'mint-ui/lib/style.css'
-import FastClick from 'fastclick'
+// import FastClick from 'fastclick'
 import '../static/js/flexible.js'
 import VueScroller from 'vue-scroller'
 
@@ -61,7 +61,7 @@ Object.keys(filters).forEach(key => {
 
 
 Vue.config.productionTip = false
-FastClick.attach(document.body)
+// FastClick.attach(document.body)
 
 new Vue({
   el: '#app',

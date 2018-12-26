@@ -49,7 +49,27 @@
         </div>
         <div v-else></div>
       </div>
-      <div class="content">
+      <div class="play_area">
+        <div class="method_item" v-for="(methodGroupPlay,index) in method_group_play_list" v-if="methodGroupPlay.group_id===currMethodGroup.group_id" :key="index">
+          <div v-for="(playInfo, ik) in methodGroupPlay.method_items" :key="ik">
+            <div class="method_tile" >
+              {{playInfo.method_name}}
+            </div>
+            <div class="method_content">
+              <ul>
+                <li @click="playactive(oddsInfo)"
+                    v-for="(oddsInfo, jk) in playInfo.play_items"
+                    :key="jk"
+                    :class="{'active':oddsInfo.checked}" >
+                  <div class="odds_content">
+                    <p>{{oddsInfo.play_name}}</p>
+                    <p style="color: red">{{oddsInfo.odds}}</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="bet_area_info">
           <div class="cellbasebet qingkongx">清空选项</div>
@@ -85,9 +105,10 @@ export default {
       cdTimer: null,
       drawerShow: false,
       currMethodGroup: {
-        group_name: '333'
+        group_name: '暂无数据'
       },
-      methodGroupList: []
+      methodGroupList: [],
+      method_group_play_list: []
     }
   },
   created () {
@@ -115,6 +136,19 @@ export default {
     }
   },
   methods: {
+    playactive: function (item) {
+      // this.navList.forEach(function (obj) {
+      //   obj.isActive = false
+      // })
+      // console.log(data)
+      if (typeof item.checked === 'undefined') {
+        //
+        this.$set(item, 'checked', true)
+        // console.log(item.text)
+      } else {
+        item.checked = !item.checked
+      }
+    },
     currGroupInfoClicked: function (currInfo) {
       this.currMethodGroup = currInfo
     },
@@ -149,6 +183,7 @@ export default {
           if (this.methodGroupList) {
             this.currMethodGroup = this.methodGroupList[0]
           }
+          this.method_group_play_list = data.data.method_group_play
           if (typeof callback === 'function') {
             callback()
           }
@@ -350,7 +385,7 @@ export default {
       float: left;
       line-height: 1.3rem;
       text-align: center;
-      border-right: solid @base-color-gray 0.01rem;
+      border-right: solid @base-color-gray 1px;
       box-sizing: border-box;
       font-size: 0.4rem;
     }
@@ -406,5 +441,60 @@ export default {
   }
   .layout{
     width: 8rem;
+  }
+  .play_area{
+    /*border: 0.01rem solid red;*/
+    width: 100%;
+    height: 11.5rem;
+    margin-top: 0.1rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    .method_item{
+      width: 100%;
+      .method_tile{
+        width: 100%;
+        height: 1rem;
+        line-height: 1rem;
+        text-align: center;
+        font-size: 0.4rem;
+        background: @base-color-white;
+        background-image: -webkit-linear-gradient(top,#FFF,#F2F2F2);
+        border-top: solid #ededed 1px;
+        border-bottom: solid #dedede 1px;
+      }
+      .method_content{
+        width: 100%;
+        background: #fff;
+        margin: 0;
+        padding: 0;
+        display: block;
+        overflow:hidden;
+        li{
+          float: left;
+          width: 20%;
+          margin-top: 0.2rem;
+          margin-bottom: 0.2rem;
+          height: 1.1rem;
+          line-height: 0.55rem;
+          font-size: 0.32rem;
+          margin-left: 4%;
+        }
+        .active{
+          background: #dd6f44;
+          /*background: #26a2ff;*/
+          /*border: solid #e73018 1px;*/
+          /*border: solid #e73018 1px;*/
+          /*border-radius: 5px;*/
+          background-image: -webkit-linear-gradient(top,@base-color,#FFF,#FFF,#FFF,#FFF,@base-color);
+        }
+        .odds_content{
+          width: 100%;
+          height: 100%;
+          text-align: center;
+          border: solid #ededed 1px;
+        }
+      }
+
+    }
   }
 </style>
