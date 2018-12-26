@@ -10,13 +10,13 @@
         <div>走势</div>
         <div>图</div>
       </div>
-    <common-header headertype="methodgroup"
-                   :showmore="true"
-                   :mglist="methodGroupList"
-                   :currgroup="currMethodGroup"
-                   :aaa="33334444"
-                   @currGroupInfoClicked="currGroupInfoClicked"></common-header>
-    <div class="page-content">
+    <div class="this-page">
+      <common-header headertype="methodgroup"
+                     :showmore="true"
+                     :mglist="methodGroupList"
+                     :currgroup="currMethodGroup"
+                     :aaa="33334444"
+                     @currGroupInfoClicked="currGroupInfoClicked"></common-header>
       <div class="issue_info">
         <div class="info">
           <div class="iline">
@@ -49,9 +49,10 @@
         </div>
         <div v-else></div>
       </div>
+      <!--<scroller class="test2" ref="scroller" >-->
       <div class="play_area">
-        <div class="method_item" v-for="(methodGroupPlay,index) in method_group_play_list" v-if="methodGroupPlay.group_id===currMethodGroup.group_id" :key="index">
-          <div v-for="(playInfo, ik) in methodGroupPlay.method_items" :key="ik">
+        <div style="margin-bottom: 6rem">
+          <div class="method_item" v-for="(playInfo,index) in curr_method_group_play.method_items" :key="index">
             <div class="method_tile" >
               {{playInfo.method_name}}
             </div>
@@ -71,15 +72,16 @@
           </div>
         </div>
       </div>
+      <div>end</div>
+      <!--</scroller>-->
       <div class="bet_area_info">
-          <div class="cellbasebet qingkongx">清空选项</div>
+          <div class="cellbasebet qingkongx" v-on:click="cleanAll">清空选项</div>
           <div class="cellbasebet zoushi"  v-on:click="drawerToggle">走势</div>
           <div class="cellbasebet lengre"  v-on:click="drawerToggle">冷热排行</div>
           <div class="cellbasebet xiazhu" v-on:click="bet">下注</div>
       </div>
     </div>
     </drawer>
-    <!--<popup></popup>-->
   </div>
 </template>
 
@@ -108,7 +110,8 @@ export default {
         group_name: '暂无数据'
       },
       methodGroupList: [],
-      method_group_play_list: []
+      method_group_play_list: [],
+      curr_method_group_play: {}
     }
   },
   created () {
@@ -137,17 +140,13 @@ export default {
   },
   methods: {
     playactive: function (item) {
-      // this.navList.forEach(function (obj) {
-      //   obj.isActive = false
-      // })
-      // console.log(data)
+      console.log(Date.now())
       if (typeof item.checked === 'undefined') {
-        //
         this.$set(item, 'checked', true)
-        // console.log(item.text)
       } else {
         item.checked = !item.checked
       }
+      console.log(Date.now())
     },
     currGroupInfoClicked: function (currInfo) {
       this.currMethodGroup = currInfo
@@ -258,6 +257,24 @@ export default {
     },
     onShow () {
       console.log('show')
+    },
+    cleanAll () {
+      for (var i = 0; i < this.curr_method_group_play.method_items.length; i++) {
+        for (var j = 0; j < this.curr_method_group_play.method_items[i].play_items.length; j++) {
+          this.$set(this.curr_method_group_play.method_items[i].play_items[j], 'checked', false)
+        }
+      }
+    }
+  },
+  watch: {
+    currMethodGroup: function () {
+      if (this.method_group_play_list.length > 0) {
+        for (var i = 0; i < this.method_group_play_list.length; i++) {
+          if (this.method_group_play_list[i].group_id === this.currMethodGroup.group_id) {
+            this.curr_method_group_play = this.method_group_play_list[i]
+          }
+        }
+      }
     }
   }
 }
@@ -411,46 +428,19 @@ export default {
   .fztitle{
     font-size: 0.43rem;
   }
-  button, input[type="button"], a.button {
-    color: #fff;
-    background-color: #3779d0;
-    border: 0;
-    font-size: 14px;
-    border-radius: 4px;
-    padding: 0px 8px;
-    height: 40px;
-    min-width: 40px;
-    line-height: 40px;
-    overflow: hidden;
-    display: inline-block;
-    outline: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    -khtml-user-select: none;
-    user-select: none;
-    -webkit-transition: all;
-    -moz-transition: all;
-    transition: all;
-    -webkit-transition-timing-function: linear;
-    -moz-transition-timing-function: linear;
-    transition-timing-function: linear;
-    -webkit-transition-duration: .2s;
-    -moz-transition-duration: .2s;
-    transition-duration: .2s;
-  }
   .layout{
     width: 8rem;
   }
   .play_area{
     /*border: 0.01rem solid red;*/
     width: 100%;
-    height: 11.5rem;
-    margin-top: 0.1rem;
+    height: 100%;
+    /*margin-bottom: 6rem;*/
     overflow-y: scroll;
-    overflow-x: hidden;
+
     .method_item{
       width: 100%;
+      /*overflow-y: scroll;*/
       .method_tile{
         width: 100%;
         height: 1rem;
@@ -481,10 +471,6 @@ export default {
         }
         .active{
           background: #dd6f44;
-          /*background: #26a2ff;*/
-          /*border: solid #e73018 1px;*/
-          /*border: solid #e73018 1px;*/
-          /*border-radius: 5px;*/
           background-image: -webkit-linear-gradient(top,@base-color,#FFF,#FFF,#FFF,#FFF,@base-color);
         }
         .odds_content{
@@ -496,5 +482,12 @@ export default {
       }
 
     }
+  }
+  .this-page{
+    width: 100%;
+    height: 100%;
+    .mt(100);
+    /*overflow-x: hidden;*/
+    /*overflow-y: scroll;*/
   }
 </style>
