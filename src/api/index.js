@@ -38,3 +38,10 @@ export const getBetPlayInfo = (params) => fetch(`${apiUrl}${API_V1}/bet/play_inf
  * @returns {*}
  */
 export const getCurrIssue = (params) => fetch(`${apiUrl}${API_V1}/lotto/curr_issue_info`, params)
+
+/**
+ * 下单
+ * @param params lotto_id
+ * @returns {*}
+ */
+export const betConfirm = (params) => post(`${apiUrl}${API_V1}/lotto/bet`, params)

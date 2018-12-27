@@ -15,10 +15,12 @@ export const apiUrl = API_URL   // 引入全局url，定义在全局变量proces
 
 // 请求超时时间
 axios.defaults.timeout = TIME_OUT
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
 // 封装请求拦截
 axios.interceptors.request.use(function (config) {
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+    config.headers['Authorization'] = localStorage.getItem('SID')
     if(config.method === 'post') {
       config.data = qs.stringify( {
         ...config.data
@@ -26,7 +28,6 @@ axios.interceptors.request.use(function (config) {
     }
     return config;
   }, function (error) {
-    loadinginstace.close()
     return Promise.reject(error);
   }
 )
@@ -56,7 +57,7 @@ export function post(url, params = {}) {
   return axios({
     url: url,
     method: "post",
-    data: qs.stringify(params)
+    data: params
   })
 }
 

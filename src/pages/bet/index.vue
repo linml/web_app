@@ -49,7 +49,6 @@
         </div>
         <div v-else></div>
       </div>
-      <!--<scroller class="test2" ref="scroller" >-->
       <div class="play_area">
         <div style="margin-bottom: 6rem">
           <div class="method_item" v-for="(playInfo,index) in curr_method_group_play.method_items" :key="index">
@@ -73,7 +72,6 @@
         </div>
       </div>
       <div>end</div>
-      <!--</scroller>-->
       <div class="bet_area_info">
           <div class="cellbasebet qingkongx" v-on:click="cleanAll">清空选项</div>
           <div class="cellbasebet zoushi"  v-on:click="drawerToggle">走势</div>
@@ -81,14 +79,34 @@
           <div class="cellbasebet xiazhu" v-on:click="bet">下注</div>
       </div>
     </div>
+    <div class="bet_confirm_box" v-if="show_bet_confirm">
+      <div class="bet_confirm_main">
+        <div class="bet_confirm_header">下注订单</div>
+        <div class="bet_confirm_content">
+          <div style="margin-bottom: 1rem;margin-top: 0.1rem">
+            <ul>
+              <li class="bet_li" v-for="(item,index) in bet_confirm_data" :key="index">
+                <p class="li_p_1 fl">【{{item.method_name}}-{{item.play_name}}】</p>
+                <p class="li_p_2 fl">{{item.play_code}}@<strong style="color: red">{{item.odds}}</strong></p>
+                <p class="li_p_3 fl"><input class="p_3_input" v-model="item.amount" /></p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="bet_confirm_footer">
+          <div class="bet_confirm_cancel" v-on:click="close_bet_confirm">取消</div>
+          <div class="bet_confirm_ok" v-on:click="bet_confirm">确认</div>
+        </div>
+      </div>
+     </div>
     </drawer>
   </div>
 </template>
 
 <script>
-// import { MessageBox } from 'mint-ui'
+import { MessageBox } from 'mint-ui'
 import commonHeader from '@/components/common-header'
-import {getBetPlayInfo, getCurrIssue} from '@/api/index'
+import {getBetPlayInfo, getCurrIssue, betConfirm} from '@/api/index'
 import {str2fromttime} from '@/filter/index'
 import Drawer from '@/components/drawer'
 export default {
@@ -111,7 +129,9 @@ export default {
       },
       methodGroupList: [],
       method_group_play_list: [],
-      curr_method_group_play: {}
+      curr_method_group_play: {}, // 当前玩法组玩法
+      show_bet_confirm: false, // 是否显示提交订单
+      bet_confirm_data: [] // 选中订单
     }
   },
   created () {
@@ -139,6 +159,9 @@ export default {
     }
   },
   methods: {
+    close_bet_confirm: function () {
+      this.show_bet_confirm = false
+    },
     playactive: function (item) {
       if (typeof item.checked === 'undefined') {
         this.$set(item, 'checked', true)
@@ -243,8 +266,7 @@ export default {
       this.drawerShow = !this.drawerShow
     },
     bet () {
-      console.log(this.sheetVisible)
-      this.sheetVisible = !this.sheetVisible
+      this.show_bet_confirm = true
     },
     onHide () {
       console.log('hide')
@@ -262,6 +284,34 @@ export default {
           this.$set(this.curr_method_group_play.method_items[i].play_items[j], 'checked', false)
         }
       }
+    },
+    bet_confirm () {
+      var params = {
+        lotto_id: this.lotto_id,
+        issue: this.curr_issue_info.issue
+      }
+      var bets = []
+      for (var i = 0; i < this.bet_confirm_data.length; i++) {
+        bets.push({
+          method_code: this.bet_confirm_data[i].method_code,
+          play_code: this.bet_confirm_data[i].play_code,
+          bet_content: this.bet_confirm_data[i].play_code,
+          amount: this.bet_confirm_data[i].amount
+        })
+      }
+      params.bets = JSON.stringify(bets)
+      betConfirm(params).then(rsp => {
+        if (rsp.status === 200) {
+          if (rsp.data.code === 0) {
+            MessageBox('提示', rsp.data.msg || '下单成功')
+            this.show_bet_confirm = false
+          } else {
+            MessageBox('提示', rsp.data.msg || '下单失败')
+          }
+        } else {
+          MessageBox('提示', '网络异常')
+        }
+      })
     }
   },
   watch: {
@@ -270,6 +320,17 @@ export default {
         for (var i = 0; i < this.method_group_play_list.length; i++) {
           if (this.method_group_play_list[i].group_id === this.currMethodGroup.group_id) {
             this.curr_method_group_play = this.method_group_play_list[i]
+          }
+        }
+      }
+    },
+    show_bet_confirm: function () {
+      this.bet_confirm_data = []
+      for (var i = 0; i < this.curr_method_group_play.method_items.length; i++) {
+        for (var j = 0; j < this.curr_method_group_play.method_items[i].play_items.length; j++) {
+          if (this.curr_method_group_play.method_items[i].play_items[j].checked === true) {
+            this.$set(this.curr_method_group_play.method_items[i].play_items[j], 'amount', 1)
+            this.bet_confirm_data.push(this.curr_method_group_play.method_items[i].play_items[j])
           }
         }
       }
@@ -489,5 +550,112 @@ export default {
     .mt(100);
     /*overflow-x: hidden;*/
     /*overflow-y: scroll;*/
+  }
+  .bet_confirm_box {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    /*color: #fff;*/
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 9999;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0.04rem 0.3rem;
+    font-size: 0.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .bet_confirm_main {
+    /*height: 100%;*/
+    width: 100%;
+    min-height: 10rem;
+    max-height: 10rem;
+    /*padding: 0 0.2rem;*/
+    color: @base-font-color;
+    background: @base-color-white;
+    transform: translate3d(0,0,0);
+    /*border-radius: 5px;*/
+    .bet_confirm_header{
+      width: 100%;
+      height: 1rem;
+      line-height: 1rem;
+      font-size: .45rem;
+      text-align: center;
+      /*padding: .2rem;*/
+      position: fixed;
+      border-bottom: 1px solid #dcdcdc;
+    }
+    .bet_confirm_content{
+      margin-top: 1.2rem;
+      margin-bottom: 1.2rem;
+      width: 100%;
+      /*height: 100%;*/
+      height: 8rem;
+      /*margin-top: 1rem;*/
+      overflow-y: scroll;
+    }
+    .bet_confirm_footer{
+      width: 100%;
+      height: 1rem;
+      font-size: .45rem;
+      text-align: center;
+      left: 0.0rem;
+      bottom: 0.0rem;
+      display: block;
+      position: fixed;
+      /*padding: .2rem;*/
+      border-top: 1px solid #dcdcdc;
+      .bet_confirm_cancel{
+        line-height: 1rem;
+        width: 50%;
+        height: 100%;
+        float: left;
+        background: white;
+      }
+      .bet_confirm_ok{
+        line-height: 1rem;
+        width: 50%;
+        height: 100%;
+        float: right;
+        color: white;
+        background: @base-color;
+        /*border-bottom-right-radius: 5px;*/
+      }
+    }
+  }
+  .bet_li{
+    margin: 0 0.4rem;
+    /*width: 100%;*/
+    height: 0.9rem;
+    line-height: 0.9rem;
+    text-align: center;
+    border-bottom: 1px solid #dcdcdc;
+    .li_p_1{
+      height: 100%;
+      width: 40%;
+    }
+    .li_p_2{
+      height: 100%;
+      width: 20%;
+    }
+    .li_p_3{
+      height: 100%;
+      width: 30%;
+      .p_3_input{
+        width: 80%;
+        height: 80%;
+        text-align: center;
+        background: #fff;
+        color: #333;
+        border: 1px solid #686868;
+      }
+    }
+  }
+  .fl{
+    float: left;
   }
 </style>
