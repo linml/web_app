@@ -22,7 +22,7 @@ export default {
     top: 50%;
     .mt(-18);
     .left(-20);
-    background-image: url("../assets/imgs/search.svg");
+    background-image: url("../assets/imgs/pulldown.svg");
     background-size: cover;
   }
   .search{

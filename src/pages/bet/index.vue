@@ -140,13 +140,11 @@ export default {
   },
   methods: {
     playactive: function (item) {
-      console.log(Date.now())
       if (typeof item.checked === 'undefined') {
         this.$set(item, 'checked', true)
       } else {
         item.checked = !item.checked
       }
-      console.log(Date.now())
     },
     currGroupInfoClicked: function (currInfo) {
       this.currMethodGroup = currInfo
@@ -356,6 +354,7 @@ export default {
     width: 100%;
     height: 1.8rem;
     background: @base-color-white;
+    border-bottom: solid @base-color-gray 0.01rem;
     .result_title{
       margin-left: 0.2rem;
       margin-top: 0.15rem;
@@ -396,6 +395,7 @@ export default {
     width: 100%;
     height: 1.3rem;
     background: @tab-general-bg-color;
+    border-top: solid @base-color-gray 0.01rem;
     display: block;
     .cellbasebet{
       height: 100%;

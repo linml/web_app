@@ -7,10 +7,10 @@ import App from './App'
 import store from './store'
 import router from './router'
 import * as filters from './filter/index'
-import Mint from 'mint-ui'
-import {Button, Swipe, SwipeItem} from 'mint-ui'
-import 'mint-ui/lib/style.css'
-// import FastClick from 'fastclick'
+// import {Button, Swipe, SwipeItem} from 'mint-ui'
+import { Swipe, SwipeItem } from 'vue-swipe';
+// import 'mint-ui/lib/style.css'
+import FastClick from 'fastclick'
 import '../static/js/flexible.js'
 import VueScroller from 'vue-scroller'
 
@@ -47,13 +47,11 @@ window.addEventListener('popstate', function(e) {
 }, false)
 
 
-Vue.use(Mint)
 // Vue.use(Vuex)
 Vue.use(VueScroller)
 
-Vue.component(Swipe.name, Swipe);
-Vue.component(SwipeItem.name, SwipeItem);
-Vue.component(Button.name, Button);
+Vue.component('swipe', Swipe);
+Vue.component('swipe-item', SwipeItem);
 
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key]);
@@ -61,7 +59,7 @@ Object.keys(filters).forEach(key => {
 
 
 Vue.config.productionTip = false
-// FastClick.attach(document.body)
+FastClick.attach(document.body)
 
 new Vue({
   el: '#app',

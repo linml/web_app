@@ -2,7 +2,7 @@
   <div>
     <common-header :tittle="tittle" :showback="false"></common-header>
     <div class="page-content">
-      <mt-button @click="todetail">footprints</mt-button>
+      <!--<mt-button @click="todetail">footprints</mt-button>-->
     </div>
   </div>
 </template>

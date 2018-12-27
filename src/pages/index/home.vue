@@ -1,13 +1,11 @@
 <template>
   <div>
     <scroller :on-refresh="refresh" ref="scroller" >
-      <div class="swipe-wrapper" v-show="banner_list.length >0 ">
-        <mt-swipe :auto="5000">
-          <mt-swipe-item v-for="(item, k) in banner_list" :key="k">
-            <img :src="item" style="width: 100%;height: auto;">
-          </mt-swipe-item>
-        </mt-swipe>
-      </div>
+        <swipe class="swipe-wrapper" :auto="5000" v-show="banner_list.length >0 ">
+          <swipe-item v-for="(item, k) in banner_list" :key="k" >
+            <img :src="item" style="width: 100%;height: 5rem;">
+          </swipe-item>
+        </swipe>
       <div class="menu">
         <ul>
           <router-link to='/Home/Detail'>
@@ -66,6 +64,7 @@
 import {mapMutations, mapGetters, mapState} from 'vuex'
 import commonHeader from '@/components/common-header'
 import {homeInit} from '@/api/index'
+import 'vue-swipe/dist/vue-swipe.css'
 // import * as homeApi from 'api/home-api'
 // import { ERR_OK } from 'config/index'
 export default {
