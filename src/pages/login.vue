@@ -62,7 +62,6 @@ export default{
             console.log(rsp.data.data)
             this.$store.dispatch('login', rsp.data.data)
             localStorage.setItem('SID', rsp.data.data.SID)
-            MessageBox('提示', 'ok')
             this.$router.push('/home')
           }
         } else {
@@ -84,7 +83,8 @@ export default{
   }
   .login-page {
     padding-left: 1.25rem!important;
-    padding-right: 1.25rem!important
+    padding-right: 1.25rem!important;
+    background: white
   }
 
   .login-page .pwd-input__list {
@@ -98,7 +98,8 @@ export default{
     -ms-flex-align: center;
     align-items: center;
     -ms-flex-pack: center;
-    justify-content: center
+    justify-content: center;
+    margin-top: 0.2rem;
   }
 
   .input-content {
@@ -131,10 +132,10 @@ export default{
   .login-page .pwd-input__list .input-item .input-content>input {
     display: block;
     width: 100%;
-    height: .85rem;
+    height: 1rem;
     text-indent: .5rem;
     border: none;
-    font-size: .35rem
+    font-size: .35rem;
   }
   .img-code {
     line-height: normal;

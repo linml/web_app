@@ -5,6 +5,7 @@ import Vue from 'vue'
 import App from './App'
 // import Vuex from 'vuex'
 import store from './store'
+import './assets/css/my-mint.scss'
 import router from './router'
 import * as filters from './filter/index'
 import { Swipe, SwipeItem } from 'vue-swipe';
@@ -13,9 +14,8 @@ import { MessageBox } from 'mint-ui'
 import FastClick from 'fastclick'
 import '../static/js/flexible.js'
 import VueScroller from 'vue-scroller'
-import axios from 'axios'
 
-Vue.prototype.$http = axios
+
 /**
 *监听浏览器点击返回前进操作动画
 *浏览器端使用需要注意路由path的创建，二级应该在一级的基础上添加

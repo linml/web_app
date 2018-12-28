@@ -109,6 +109,7 @@ import commonHeader from '@/components/common-header'
 import {getBetPlayInfo, getCurrIssue, betConfirm} from '@/api/index'
 import {str2fromttime} from '@/filter/index'
 import Drawer from '@/components/drawer'
+import { CODE_NOT_LOGIN, CODE_LOGIN_EXPIRED } from '@/apiconfig/index'
 export default {
   data () {
     return {
@@ -305,13 +306,17 @@ export default {
           if (rsp.data.code === 0) {
             MessageBox('提示', rsp.data.msg || '下单成功')
             this.show_bet_confirm = false
+          } else if (rsp.data.code === CODE_NOT_LOGIN || rsp.data.code === CODE_LOGIN_EXPIRED) {
+            MessageBox.confirm('登录', rsp.data.msg || '登录', {confirmButtonText: '去登录'}).then(action => {
+              this.$router.push('/login')
+            })
           } else {
-            MessageBox('提示', rsp.data.msg || '下单失败')
+            MessageBox('提示', rsp.data.msg || '网络异常')
           }
         } else {
           MessageBox('提示', '网络异常')
         }
-      })
+      }).catch((error) => { console.log(error) })
     }
   },
   watch: {
