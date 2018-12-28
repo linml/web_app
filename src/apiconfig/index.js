@@ -1,7 +1,7 @@
 /* eslint-disable */
 import axios from 'axios'
 import qs from 'qs'
-import {API_URL} from '../../static/js/conf'
+// import Conf from '../../static/js/conf.json'
 
 /**
 * 定义请求常量
@@ -11,7 +11,14 @@ export const TIME_OUT = 1000;    // 请求超时时间
 export const ERR_OK = true;      // 请求成功返回状态，字段和后台统一
 export const baseUrl = process.env.BASE_URL   // 引入全局url，定义在全局变量process.env中
 // export const apiUrl = process.env.API_URL   // 引入全局url，定义在全局变量process.env中
-export const apiUrl = API_URL   // 引入全局url，定义在全局变量process.env中
+// export const apiUrl = Conf.API_URL   // 引入全局url，定义在全局变量process.env中
+
+axios.get("/static/js/conf.json").then((result)=>{
+  localStorage.setItem('API_URL',result.data.API_URL);
+  console.log(localStorage.getItem('API_URL'));
+}).catch((error)=>{console.log(error)});
+
+// export const apiUrl = url   // 引入全局url，定义在全局变量process.env中
 
 // 请求超时时间
 axios.defaults.timeout = TIME_OUT

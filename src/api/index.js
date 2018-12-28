@@ -3,9 +3,11 @@
  * @param params
  * @returns {*}
  */
-import {fetch, post, apiUrl} from '@/apiconfig/index'
+import {fetch, post} from '@/apiconfig/index'
 
 export const API_V1 = '/api/v1'
+
+let apiUrl = localStorage.getItem('API_URL')
 /**
  * 账号登录
  * @param params
