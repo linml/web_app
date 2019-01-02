@@ -10,24 +10,27 @@ import qs from 'qs'
 export const TIME_OUT = 1000;    // 请求超时时间
 export const ERR_OK = true;      // 请求成功返回状态，字段和后台统一
 export const baseUrl = process.env.BASE_URL   // 引入全局url，定义在全局变量process.env中
-// export const apiUrl = process.env.API_URL   // 引入全局url，定义在全局变量process.env中
-// export const apiUrl = Conf.API_URL   // 引入全局url，定义在全局变量process.env中
+
+export const CODE_OK = 0 //   请求成功
+export const CODE_FAIL = 100 //   请求失败
+export const CODE_NOT_LOGIN = 101 //   未登录
+export const CODE_LOGIN_EXPIRED = 102 //   登录超时
 
 axios.get("/static/js/conf.json").then((result)=>{
   localStorage.setItem('API_URL',result.data.API_URL);
   console.log(localStorage.getItem('API_URL'));
 }).catch((error)=>{console.log(error)});
 
-// export const apiUrl = url   // 引入全局url，定义在全局变量process.env中
-
 // 请求超时时间
 axios.defaults.timeout = TIME_OUT
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; application/json; charset=utf-8';
+axios.defaults.headers['Authorization'] = 'SID:'+ localStorage.getItem('SID');
+// axios.defaults.withCredentials = true;
+
 
 // 封装请求拦截
 axios.interceptors.request.use(function (config) {
-    config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-    config.headers['Authorization'] = localStorage.getItem('SID')
+    // config.headers.Authorization = localStorage.getItem('SID')
     if(config.method === 'post') {
       config.data = qs.stringify( {
         ...config.data

@@ -59,9 +59,8 @@
               <ul>
                 <li @click="playactive(oddsInfo)"
                     v-for="(oddsInfo, jk) in playInfo.play_items"
-                    :key="jk"
-                    :class="{'active':oddsInfo.checked}" >
-                  <div class="odds_content">
+                    :key="jk">
+                  <div class="odds_content" :class="{'active':oddsInfo.checked}">
                     <p>{{oddsInfo.play_name}}</p>
                     <p style="color: red">{{oddsInfo.odds}}</p>
                   </div>
@@ -82,6 +81,15 @@
     <div class="bet_confirm_box" v-if="show_bet_confirm">
       <div class="bet_confirm_main">
         <div class="bet_confirm_header">下注订单</div>
+        <div style="margin-top: 1.0rem; background-color: red; color: white">
+          <ul>
+            <li class="bet_li">
+              <p class="li_p_1 fl">【玩法】</p>
+              <p class="li_p_2 fl">赔率</p>
+              <p class="li_p_3 fl">金额</p>
+            </li>
+          </ul>
+        </div>
         <div class="bet_confirm_content">
           <div style="margin-bottom: 1rem;margin-top: 0.1rem">
             <ul>
@@ -109,6 +117,7 @@ import commonHeader from '@/components/common-header'
 import {getBetPlayInfo, getCurrIssue, betConfirm} from '@/api/index'
 import {str2fromttime} from '@/filter/index'
 import Drawer from '@/components/drawer'
+import { CODE_NOT_LOGIN, CODE_LOGIN_EXPIRED } from '@/apiconfig/index'
 export default {
   data () {
     return {
@@ -305,13 +314,17 @@ export default {
           if (rsp.data.code === 0) {
             MessageBox('提示', rsp.data.msg || '下单成功')
             this.show_bet_confirm = false
+          } else if (rsp.data.code === CODE_NOT_LOGIN || rsp.data.code === CODE_LOGIN_EXPIRED) {
+            MessageBox.confirm(rsp.data.msg || '登录', '登录', {confirmButtonText: '去登录'}).then(action => {
+              this.$router.push('/login')
+            })
           } else {
-            MessageBox('提示', rsp.data.msg || '下单失败')
+            MessageBox('提示', rsp.data.msg || '网络异常')
           }
         } else {
           MessageBox('提示', '网络异常')
         }
-      })
+      }).catch((error) => { console.log(error) })
     }
   },
   watch: {
@@ -531,8 +544,7 @@ export default {
           margin-left: 4%;
         }
         .active{
-          background: #dd6f44;
-          background-image: -webkit-linear-gradient(top,@base-color,#FFF,#FFF,#FFF,#FFF,@base-color);
+          border: solid red 1px !important;
         }
         .odds_content{
           width: 100%;
@@ -578,7 +590,7 @@ export default {
     color: @base-font-color;
     background: @base-color-white;
     transform: translate3d(0,0,0);
-    /*border-radius: 5px;*/
+    border-radius: 5px;
     .bet_confirm_header{
       width: 100%;
       height: 1rem;
@@ -590,7 +602,7 @@ export default {
       border-bottom: 1px solid #dcdcdc;
     }
     .bet_confirm_content{
-      margin-top: 1.2rem;
+      /*margin-top: 1.2rem;*/
       margin-bottom: 1.2rem;
       width: 100%;
       /*height: 100%;*/
@@ -615,6 +627,7 @@ export default {
         height: 100%;
         float: left;
         background: white;
+        border-bottom-left-radius: 5px;
       }
       .bet_confirm_ok{
         line-height: 1rem;
@@ -623,7 +636,7 @@ export default {
         float: right;
         color: white;
         background: @base-color;
-        /*border-bottom-right-radius: 5px;*/
+        border-bottom-right-radius: 5px;
       }
     }
   }

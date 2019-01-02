@@ -5,15 +5,23 @@
       <section class="pwd-input__list">
         <section class="input-item">
           <section class="input-content">
-            <input v-model="user.name" id="name" type="text" placeholder="请输入账号" value="test773"/>
+            <input v-model="user.name" id="name" type="text" placeholder="请输入账号" value=""/>
           </section>
         </section>
         <section class="input-item">
           <section class="input-content">
-            <input v-model="user.password" id="password" type="password" placeholder="请输入密码" value="a123456"/>
+            <input v-model="user.password" id="password" type="password" placeholder="请输入密码" value=""/>
           </section>
         </section>
         <section class="login-btn" @click="login">登录</section>
+        <section class="link-box">
+          <section class="link-a">
+            <router-link to="/register">立即注册</router-link>
+          </section>
+          <section class="link-b">
+            <router-link to="/register">游客试玩</router-link>
+          </section>
+        </section>
       </section>
     </section>
   </div>
@@ -43,7 +51,7 @@ export default{
   methods: {
     login () {
       if (this.user.name === '') {
-        MessageBox('提示', '账户不能为空')
+        MessageBox('提示', '请先输入账号')
         return
       }
       if (this.user.password === '') {
@@ -60,9 +68,7 @@ export default{
             MessageBox('提示', rsp.data.msg)
           } else {
             console.log(rsp.data.data)
-            this.$store.dispatch('login', rsp.data.data)
             localStorage.setItem('SID', rsp.data.data.SID)
-            MessageBox('提示', 'ok')
             this.$router.push('/home')
           }
         } else {
@@ -84,7 +90,8 @@ export default{
   }
   .login-page {
     padding-left: 1.25rem!important;
-    padding-right: 1.25rem!important
+    padding-right: 1.25rem!important;
+    background: white
   }
 
   .login-page .pwd-input__list {
@@ -98,7 +105,8 @@ export default{
     -ms-flex-align: center;
     align-items: center;
     -ms-flex-pack: center;
-    justify-content: center
+    justify-content: center;
+    margin-top: 0.3rem;
   }
 
   .input-content {
@@ -118,6 +126,22 @@ export default{
     font-size: .4rem;
     line-height: 1rem
   }
+  .link-box {
+    height: 1rem;
+    color: #fff;
+    margin: 0.3rem auto 0;
+    text-align: center;
+    font-size: .4rem;
+    line-height: 1rem;
+    .link-a a {
+      color: blue;
+      float: left;
+    }
+    .link-b a {
+      color: #26a2ff;
+      float: right;
+    }
+  }
   body input,body textarea {
     -webkit-user-select: auto!important;
     -moz-user-select: auto!important;
@@ -131,10 +155,10 @@ export default{
   .login-page .pwd-input__list .input-item .input-content>input {
     display: block;
     width: 100%;
-    height: .85rem;
+    height: 1rem;
     text-indent: .5rem;
     border: none;
-    font-size: .35rem
+    font-size: .35rem;
   }
   .img-code {
     line-height: normal;

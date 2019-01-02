@@ -1,24 +1,31 @@
 
 <template>
   <div>
-    <drawer :show="drawerShow"
-            :pos="pos"
-            :tran="tran"
-            @change-show="changeDrawerShow"
-            @on-hide="onHide"
-            @on-show="onShow">
-      <div class="layout" slot="drawer" >
-        <div>走势图</div>
-        <div>数据</div>
+    <div class="account-head">
+      <div class="me-info">
+        <div>头像</div>
+        <div>账户</div>
+        <div>设置icon</div>
       </div>
-      <div class="page-content">
-        <button v-on:click="drawerToggle">toggle</button>
+      <div>
+        <div>可用余额</div>
+        <div>可提余额</div>
       </div>
-    </drawer>
-    <div class="page-content">
-      <button v-on:click="drawerToggle">toggl33e</button>
+      <div>
+        <div>充值</div>
+        <div>提款</div>
+      </div>
     </div>
-    <!--<common-header :tittle="tittle" :showback="false"></common-header>-->
+    <div class="account-body">
+      <div style="height: 5rem">
+        <ul>
+          <li  v-for="(item,index) in bodylist" :key="index">
+            <img slot="icon" :src="item.icon" width="24" height="24">
+            {{item.title}}
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -30,16 +37,17 @@ export default {
   data () {
     return {
       tittle: '我的',
-      num: 0,
-      pos: 'left',
-      tran: 'overlay',
-      drawerShow: false,
-      navItems: [
-        'decide the width u like',
-        'Item2',
-        'Item3',
-        'Item4',
-        'Item5'
+      bodylist: [
+        {
+          title: '投注记录',
+          icon: '../assets/imgs/index-noselect.svg',
+          path: ''
+        },
+        {
+          title: '中奖记录',
+          icon: '../../assets/imgs/index-noselect.svg',
+          path: ''
+        }
       ]
     }
   },
@@ -97,39 +105,19 @@ export default {
 @import "~@/styles/index.less";
 @import "~@/styles/variable.less";
 
-.layout{
-  width: 7rem;
+.account-head{
+  width: 100%;
+  height: 5rem;
+  background: @base-color;
 }
-button, input[type="button"], a.button {
-  color: #fff;
-  background-color: #3779d0;
-  border: 0;
-  font-size: 14px;
-  border-radius: 4px;
-  padding: 0px 8px;
-  height: 40px;
-  min-width: 40px;
-  line-height: 40px;
-  overflow: hidden;
-  display: inline-block;
-  outline: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  -khtml-user-select: none;
-  user-select: none;
-  -webkit-transition: all;
-  -moz-transition: all;
-  transition: all;
-  -webkit-transition-timing-function: linear;
-  -moz-transition-timing-function: linear;
-  transition-timing-function: linear;
-  -webkit-transition-duration: .2s;
-  -moz-transition-duration: .2s;
-  transition-duration: .2s;
-}
-button:active{
-  color: #fff;
-  background-color: #377000;
-}
+  .account-body{
+    width: 100%;
+    height: 100%;
+    background: white;
+    margin-top: 0.1rem;
+  }
+  .me-info{
+    width: 100%;
+    height: 2rem;
+  }
 </style>
