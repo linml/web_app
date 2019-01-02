@@ -7,7 +7,8 @@ import {fetch, post} from '@/apiconfig/index'
 
 export const API_V1 = '/api/v1'
 
-let apiUrl = localStorage.getItem('API_URL')
+// let apiUrl = localStorage.getItem('API_URL')
+let apiUrl = ''
 /**
  * 账号登录
  * @param params
@@ -47,3 +48,31 @@ export const getCurrIssue = (params) => fetch(`${apiUrl}${API_V1}/lotto/curr_iss
  * @returns {*}
  */
 export const betConfirm = (params) => post(`${apiUrl}${API_V1}/lotto/bet`, params)
+
+/**
+ * 获取验证码
+ * @param params
+ * @returns {*}
+ */
+export const getCaptcha = (params) => fetch(`${apiUrl}${API_V1}/captcha`, params)
+
+/**
+ * 获取验证码地址
+ * @param params
+ * @returns {*}
+ */
+export const getCaptchaUrl = (params) => `${apiUrl}${API_V1}/captcha`
+
+/**
+ * 注册
+ * @param params
+ * @returns {*}
+ */
+export const register1 = (params) => post(`${apiUrl}${API_V1}/register`, params)
+
+/**
+ * 个人信息
+ * @param params
+ * @returns {*}
+ */
+export const infos = (params) => fetch(`${apiUrl}${API_V1}/infos`, params)

@@ -5,21 +5,29 @@
       <section class="pwd-input__list">
         <section class="input-item">
           <section class="input-content">
-            <input v-model="user.name" id="name" type="text" placeholder="请输入账号" value=""/>
+            <input v-model="user.name" id="name" type="text" placeholder="请输入账号"/>
           </section>
         </section>
         <section class="input-item">
           <section class="input-content">
-            <input v-model="user.password" id="password" type="password" placeholder="请输入密码" value=""/>
+            <input v-model="user.password" id="password" type="password" placeholder="请输入密码"/>
           </section>
         </section>
-        <section class="login-btn" @click="login">登录</section>
+        <section class="input-item">
+          <section class="input-content">
+            <input v-model="user.confirm_password" id="confirm_password" type="password" placeholder="请再次输入密码"/>
+          </section>
+        </section>
+        <section class="input-item">
+          <section class="input-content">
+            <input v-model="user.code" id="code" type="text" placeholder="验证码"/>
+            <img :src="captcha" class="img-code" @click="refresh_img">
+          </section>
+        </section>
+        <section class="login-btn" @click="register_account">注册</section>
         <section class="link-box">
           <section class="link-a">
-            <router-link to="/register">立即注册</router-link>
-          </section>
-          <section class="link-b">
-            <router-link to="/register">游客试玩</router-link>
+            <router-link to="/login">已经账户去登录</router-link>
           </section>
         </section>
       </section>
@@ -28,28 +36,35 @@
 </template>
 <script>
 import commonHeader from '@/components/common-header'
-import {login} from '@/api/index'
+import {register1, getCaptchaUrl} from '@/api/index'
 import { MessageBox } from 'mint-ui'
+import { CODE_OK } from '@/apiconfig/index'
 
 export default{
   data () {
     return {
       user: {
         name: '',
-        password: ''
+        password: '',
+        confirm_password: '',
+        code: ''
       },
       showAlert: false,
       alertText: '',
-      title: '登录'
+      title: '注册',
+      captcha: ''
     }
   },
   components: {
     commonHeader
   },
+  mounted () {
+    this.refresh_img()
+  },
   computed: {
   },
   methods: {
-    login () {
+    register_account () {
       if (this.user.name === '') {
         MessageBox('提示', '请先输入账号')
         return
@@ -58,22 +73,38 @@ export default{
         MessageBox('提示', '密码不能为空')
         return
       }
+      if (this.user.confirm_password === '') {
+        MessageBox('提示', '请再次确认密码')
+        return
+      }
+      if (this.user.confirm_password !== this.user.password) {
+        MessageBox('提示', '两次输入密码不相同')
+        return
+      }
       let params = {
         name: this.user.name,
-        password: this.user.password
+        password: this.user.password,
+        code: this.user.code
       }
-      login(params).then(rsp => {
+      register1(params).then(rsp => {
         if (rsp.status === 200) {
-          if (rsp.data.msg !== '') {
-            MessageBox('提示', rsp.data.msg)
+          console.log(rsp.code)
+          console.log(CODE_OK)
+          if (rsp.data.code === CODE_OK) {
+            // localStorage.setItem('SID', rsp.data.data.SID)
+            MessageBox('提示', rsp.data.msg || '注册成功')
+            this.$router.push('/login')
           } else {
-            localStorage.setItem('SID', rsp.data.data.SID)
-            this.$router.push('/home')
+            MessageBox('提示', rsp.data.msg || '注册失败')
+            this.refresh_img()
           }
         } else {
           MessageBox('提示', '网络异常')
         }
       })
+    },
+    refresh_img () {
+      this.captcha = getCaptchaUrl() + '?_t=' + parseInt((+new Date()) / 1000)
     }
   }
 }
@@ -163,9 +194,9 @@ export default{
     line-height: normal;
     position: absolute;
     width: 3rem;
-    height: 1.6rem;
-    right: .25rem;
-    top: .3rem
+    height: 0.9rem;
+    right: .2rem;
+    top: 0.05rem
   }
 
 </style>

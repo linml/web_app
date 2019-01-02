@@ -3,25 +3,42 @@
   <div>
     <div class="account-head">
       <div class="me-info">
-        <div>头像</div>
-        <div>账户</div>
-        <div>设置icon</div>
+        <div class="me"></div>
+        <div class="me-account">
+          <p style="text-align: left"> <strong>{{user.name}}</strong></p>
+          <p style="text-align: left;">ID: {{user.user_id}}</p>
+        </div>
+        <div>
+          <img src="../../assets/imgs/settings.svg" style="height: 0.8rem; width: 0.8rem; vertical-align:middle;">
+        </div>
       </div>
-      <div>
-        <div>可用余额</div>
-        <div>可提余额</div>
+      <div class="balance-info">
+        <div class="balance-l">
+          <p class="cy f3">可用余额</p>
+          <p class="cw f4">{{user.balance}}</p>
+        </div>
+        <div class="balance-r">
+          <p class="cy f3">当前积分</p>
+          <p class="cw f4">{{user.balance}}</p>
+        </div>
       </div>
-      <div>
-        <div>充值</div>
-        <div>提款</div>
+      <div class="deposit-withdraw">
+        <div class="dw-l">
+          <span class="shop_icon"><img src="../../assets/imgs/deposit.svg" style="height: 0.4rem; width: 0.4rem; vertical-align:middle;"></span>
+          <span>充值</span>
+        </div>
+        <div class="dw-r">
+          <span class="shop_icon"><img src="../../assets/imgs/withdraw.svg" style="height: 0.4rem; width: 0.4rem; vertical-align:middle;"></span>
+          <span>提款</span>
+        </div>
       </div>
     </div>
     <div class="account-body">
-      <div style="height: 5rem">
-        <ul>
+      <div>
+        <ul class="ullist">
           <li  v-for="(item,index) in bodylist" :key="index">
-            <img slot="icon" :src="item.icon" width="24" height="24">
-            {{item.title}}
+            <div class="liimg fl" v-bind:style="{backgroundImage:'url(require(\'' + item.icon + '\'))', backgroundRepeat:'no-repeat', backgroundPosition:'center center', backgroundSize: 'contain'}"></div>
+            <p>{{item.title}}</p>
           </li>
         </ul>
       </div>
@@ -33,6 +50,9 @@
 import {mapMutations, mapGetters, mapState} from 'vuex'
 import commonHeader from '@/components/common-header'
 import Drawer from '@/components/drawer.vue'
+import {infos} from '@/api/index'
+import {CODE_OK} from '@/apiconfig/index'
+
 export default {
   data () {
     return {
@@ -40,18 +60,26 @@ export default {
       bodylist: [
         {
           title: '投注记录',
-          icon: '../assets/imgs/index-noselect.svg',
+          icon: '../../assets/imgs/note-noselect.svg',
           path: ''
         },
         {
           title: '中奖记录',
-          icon: '../../assets/imgs/index-noselect.svg',
+          icon: '../assets/imgs/note-noselect.svg',
           path: ''
         }
-      ]
+      ],
+      user: {
+        name: '--',
+        id: '--',
+        balance: '--'
+      }
     }
   },
   created () {},
+  mounted () {
+    this.refreshInfos()
+  },
   methods: {
     ...mapMutations({
       setNum: 'SET_NUM'
@@ -83,6 +111,15 @@ export default {
     },
     onShow () {
       console.log('show')
+    },
+    refreshInfos () {
+      infos().then(rsp => {
+        if (rsp.status === 200) {
+          if (rsp.data.code === CODE_OK) {
+            this.user = rsp.data.data
+          }
+        } else {}
+      })
     }
   },
   components: {
@@ -115,9 +152,88 @@ export default {
     height: 100%;
     background: white;
     margin-top: 0.1rem;
+    .ullist{
+      li {
+        height: 1.0rem;
+        padding: 0 .3rem;
+        .liimg{
+          margin: 0.1rem;
+          width: .8rem;
+          height: .8rem;
+          float:left;
+        }
+      }
+    }
   }
   .me-info{
-    width: 100%;
-    height: 2rem;
+    /*width: 100%;*/
+    height: 1.4rem;
+    padding: 0.3rem;
+    align-items:center;
+    display:flex;
+    border-bottom: solid brown 0.01rem;
+    .me{
+      /*width: 30%;*/
+      width: 1.2rem;
+      height: 1.2rem;
+      display: inline-block;
+      background-size: cover;
+      float: left;
+      vertical-align: middle;
+      background-image: url("../../assets/imgs/me.svg");
+    }
+    .me-account {
+      width: 80%;
+      margin-left: 0.2rem;
+      color: white;
+      font-size: 0.4rem;
+      float: left;
+    }
+  }
+  .balance-info {
+    height: 1.2rem;
+    padding: 0.2rem;
+    align-items:center;
+    display:flex;
+    /*border-bottom: solid brown 0.01rem;*/
+    .balance-l {
+      width: 50%;
+    }
+    .balance-r {
+      width: 50%;
+    }
+  }
+  .cy{
+    color: yellow;
+  }
+  .cw{
+    color: white;
+  }
+  .f3{
+    font-size: 0.3rem;
+  }
+.f4{
+  font-size: 0.4rem;
+}
+  .coin{
+    width: 0.4rem;
+    height: 0.5rem;
+    background-size: cover;
+    background-image: url("../../assets/imgs/coin.svg");
+  }
+  .deposit-withdraw{
+    height: 1.0rem;
+    padding: 0.2rem;
+    align-items:center;
+    display:flex;
+    background: #de0909;
+    .dw-l {
+      width: 50%;
+      color: white;
+    }
+    .dw-r {
+      width: 50%;
+      color: white;
+    }
   }
 </style>

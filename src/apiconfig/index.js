@@ -16,16 +16,16 @@ export const CODE_FAIL = 100 //   请求失败
 export const CODE_NOT_LOGIN = 101 //   未登录
 export const CODE_LOGIN_EXPIRED = 102 //   登录超时
 
-axios.get("/static/js/conf.json").then((result)=>{
-  localStorage.setItem('API_URL',result.data.API_URL);
-  console.log(localStorage.getItem('API_URL'));
-}).catch((error)=>{console.log(error)});
+// axios.get("/static/js/conf.json").then((result)=>{
+//   localStorage.setItem('API_URL',result.data.API_URL);
+//   console.log(localStorage.getItem('API_URL'));
+// }).catch((error)=>{console.log(error)});
 
 // 请求超时时间
 axios.defaults.timeout = TIME_OUT
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; application/json; charset=utf-8';
-axios.defaults.headers['Authorization'] = 'SID:'+ localStorage.getItem('SID');
-// axios.defaults.withCredentials = true;
+// axios.defaults.headers['Authorization'] = 'SID:'+ localStorage.getItem('SID');
+axios.defaults.withCredentials = true;
 
 
 // 封装请求拦截
@@ -81,6 +81,7 @@ export function fetch(url, params = {}) {
   return axios({
     url: url,
     method: "get",
+    // credentials: "same-origin",
     params: params
   })
 }

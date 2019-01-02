@@ -73,6 +73,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: (resolve) => require(['@/pages/login'], resolve)
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: (resolve) => require(['@/pages/register'], resolve)
     }
   ]
 })
