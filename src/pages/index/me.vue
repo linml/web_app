@@ -1,6 +1,6 @@
 
 <template>
-  <div>
+  <div style="overflow-y: scroll">
     <div class="account-head">
       <div class="me-info">
         <div class="me"></div>
@@ -14,17 +14,23 @@
       </div>
       <div class="balance-info">
         <div class="balance-l">
-          <p class="cy f3">可用余额</p>
+          <div class="dw-l">
+            <span class="shop_icon"><img src="../../assets/imgs/coin.svg" style="height: 0.4rem; width: 0.4rem; vertical-align:middle;"></span>
+            <span class="cy f3">余额</span>
+          </div>
           <p class="cw f4">{{user.balance}}</p>
         </div>
         <div class="balance-r">
-          <p class="cy f3">当前积分</p>
+          <div class="dw-l">
+            <span class="shop_icon"><img src="../../assets/imgs/coin.svg" style="height: 0.4rem; width: 0.4rem; vertical-align:middle;"></span>
+            <span class="cy f3">积分</span>
+          </div>
           <p class="cw f4">{{user.balance}}</p>
         </div>
       </div>
       <div class="deposit-withdraw">
         <div class="dw-l">
-          <span class="shop_icon"><img src="../../assets/imgs/deposit.svg" style="height: 0.4rem; width: 0.4rem; vertical-align:middle;"></span>
+          <span class="shop_icon"><img src="../../assets/imgs/cunkuan.svg" style="height: 0.4rem; width: 0.4rem; vertical-align:middle;"></span>
           <span>充值</span>
         </div>
         <div class="dw-r">
@@ -36,9 +42,16 @@
     <div class="account-body">
       <div>
         <ul class="ullist">
-          <li  v-for="(item,index) in bodylist" :key="index">
-            <div class="liimg fl" v-bind:style="{backgroundImage:'url(require(\'' + item.icon + '\'))', backgroundRepeat:'no-repeat', backgroundPosition:'center center', backgroundSize: 'contain'}"></div>
-            <p>{{item.title}}</p>
+          <li v-for="(item, index) in bodylist" :key="index">
+            <router-link tag="a" :to="item.path">
+              <div class="my-cell">
+                <div class="leftbox llll" :class="item.icon"></div>
+                <!--<div class="leftbox"><img class="myimg" src="../../assets/imgs/tzjl.svg"></div>-->
+                <div class="midbox"><p class="midtitle">{{item.title}}</p></div>
+                <div class="rightbox">
+                </div>
+              </div>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -51,7 +64,8 @@ import {mapMutations, mapGetters, mapState} from 'vuex'
 import commonHeader from '@/components/common-header'
 import Drawer from '@/components/drawer.vue'
 import {infos} from '@/api/index'
-import {CODE_OK} from '@/apiconfig/index'
+import {CODE_OK, CODE_NOT_LOGIN, CODE_LOGIN_EXPIRED} from '@/apiconfig/index'
+import { MessageBox } from 'mint-ui'
 
 export default {
   data () {
@@ -60,12 +74,37 @@ export default {
       bodylist: [
         {
           title: '投注记录',
-          icon: '../../assets/imgs/note-noselect.svg',
-          path: ''
+          icon: 'tzjl',
+          path: '/record/bet'
         },
         {
           title: '中奖记录',
-          icon: '../assets/imgs/note-noselect.svg',
+          icon: 'zjjl',
+          path: ''
+        },
+        {
+          title: '充值记录',
+          icon: 'czjl',
+          path: ''
+        },
+        {
+          title: '取款记录',
+          icon: 'qkjl',
+          path: ''
+        },
+        {
+          title: '客服',
+          icon: 'kf',
+          path: ''
+        },
+        {
+          title: '分享',
+          icon: 'fx',
+          path: ''
+        },
+        {
+          title: '更多',
+          icon: 'gd',
           path: ''
         }
       ],
@@ -117,6 +156,12 @@ export default {
         if (rsp.status === 200) {
           if (rsp.data.code === CODE_OK) {
             this.user = rsp.data.data
+          } else if (rsp.data.code === CODE_NOT_LOGIN) {
+            MessageBox.alert('请先登录')
+            this.$router.push('/login')
+          } else if (rsp.data.code === CODE_LOGIN_EXPIRED) {
+            MessageBox.alert('请重新登录')
+            this.$router.push('/login')
           }
         } else {}
       })
@@ -152,18 +197,6 @@ export default {
     height: 100%;
     background: white;
     margin-top: 0.1rem;
-    .ullist{
-      li {
-        height: 1.0rem;
-        padding: 0 .3rem;
-        .liimg{
-          margin: 0.1rem;
-          width: .8rem;
-          height: .8rem;
-          float:left;
-        }
-      }
-    }
   }
   .me-info{
     /*width: 100%;*/
@@ -236,4 +269,82 @@ export default {
       color: white;
     }
   }
+.ullist{
+  li {
+    height: 1.1rem;
+    padding: 0 .3rem;
+    /*border: 0.01rem solid green;*/
+    align-items:center;
+    border-bottom: solid #ededed 1px;
+  }
+  .my-cell{
+    height: 1.1rem;
+    line-height: 1.1rem;
+    /*border: 0.01rem solid red;*/
+    text-align: center;
+    .leftbox {
+      width: 1rem;
+      height: 1.1rem;
+      line-height: 1.1rem;
+      float: left;
+      text-align: center;
+      .myimg {
+        /*line-height: 1.0rem;*/
+        height: 0.6rem;
+        width: 0.6rem;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+    .midbox {
+      width: 60%;
+      float: left;
+      margin-left: 0.3rem;
+      .midtitle {
+        float: left;
+        font-size: 0.39rem;
+        color: black;
+      }
+    }
+    .rightbox {
+      width: 10%;
+      float: left;
+      .arrow-icon{
+        background-image: url("../../assets/imgs/tzjl.svg");
+      }
+    }
+  }
+}
+
+.llll{
+  height: 1.1rem;
+  line-height: 1.1rem;
+  display: inline-block;
+  vertical-align: middle;
+  background-size: 0.6rem;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.tzjl{
+  background-image: url("../../assets/imgs/tzjl.svg");
+}
+.zjjl{
+  background-image: url("../../assets/imgs/zjjl.svg");
+}
+.czjl{
+  background-image: url("../../assets/imgs/czjl.svg");
+}
+.qkjl{
+  background-image: url("../../assets/imgs/qkjl.svg");
+}
+.kf{
+  background-image: url("../../assets/imgs/kf.svg");
+}
+.fx{
+  background-image: url("../../assets/imgs/share.svg");
+}
+.gd{
+  background-image: url("../../assets/imgs/gd.svg");
+}
 </style>

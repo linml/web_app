@@ -1,6 +1,6 @@
 <template>
   <div>
-    <common-header :tittle="title" :showback="true"></common-header>
+    <common-header :tittle="title" :showhome="true" :showback="false"></common-header>
     <section class="page login-page">
       <section class="pwd-input__list">
         <section class="input-item">

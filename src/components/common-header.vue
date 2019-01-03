@@ -2,6 +2,7 @@
     <div class="header-box">
       <div class="left-icon">
         <span v-if="showback" @click="back" class="icon-back"></span>
+        <span v-if="showhome" @click="gohome" class="icon-home"></span>
       </div>
       <div class="header-tittle">
         <span v-if="headertype === 'cusinput'">
@@ -39,6 +40,10 @@ export default {
       default: false
     },
     showleft: {
+      type: Boolean,
+      default: false
+    },
+    showhome: {
       type: Boolean,
       default: false
     },
@@ -83,6 +88,9 @@ export default {
     back () {
       this.$router.goBack()
     },
+    gohome () {
+      this.$router.push('/home')
+    },
     currGroupInfoClicked: function (currInfo) {
       this.$emit('currGroupInfoClicked', currInfo)
     }
@@ -123,6 +131,16 @@ export default {
       .left(25);
       .top(25);
       background-image: url("../assets/imgs/w-back.svg");
+      background-size: cover;
+    }
+    .icon-home{
+      position: absolute;
+      display: inline-block;
+      .w(50);
+      .h(50);
+      .left(25);
+      .top(25);
+      background-image: url("../assets/imgs/home.svg");
       background-size: cover;
     }
   }
