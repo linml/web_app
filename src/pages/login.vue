@@ -5,12 +5,12 @@
       <section class="pwd-input__list">
         <section class="input-item">
           <section class="input-content">
-            <input v-model="user.name" id="name" type="text" placeholder="请输入账号" value=""/>
+            <input v-model="user.name" id="name" type="text" placeholder="请输入账号"/>
           </section>
         </section>
         <section class="input-item">
           <section class="input-content">
-            <input v-model="user.password" id="password" type="password" placeholder="请输入密码" value=""/>
+            <input v-model="user.password" id="pwd" type="password" placeholder="请输入密码"/>
           </section>
         </section>
         <section class="login-btn" @click="login">登录</section>
@@ -19,7 +19,7 @@
             <router-link to="/register">立即注册</router-link>
           </section>
           <section class="link-b">
-            <router-link to="/register">游客试玩</router-link>
+            <p @click="guest_login" style="color: #26a2ff; float: right;">游客试玩</p>
           </section>
         </section>
       </section>
@@ -28,7 +28,7 @@
 </template>
 <script>
 import commonHeader from '@/components/common-header'
-import {login} from '@/api/index'
+import {login, guestLogin} from '@/api/index'
 import { MessageBox } from 'mint-ui'
 
 export default{
@@ -73,6 +73,12 @@ export default{
         } else {
           MessageBox('提示', '网络异常')
         }
+      })
+    },
+    guest_login () {
+      guestLogin().then(rsp => {
+        localStorage.setItem('SID', rsp.data.data.SID)
+        this.$router.push('/home')
       })
     }
   }
@@ -136,7 +142,7 @@ export default{
       color: blue;
       float: left;
     }
-    .link-b a {
+    .link-b a p {
       color: #26a2ff;
       float: right;
     }

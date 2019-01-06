@@ -20,6 +20,17 @@
       </div>
       <div class="right-icon">
         <span v-if="showmore" class="icon"></span>
+        <span v-if="showbetmore" class="icon"  @click="changeBetMore">
+          <div class="dropIncreaseIdBack positionFixed" v-if="betmorepopup === true"></div>
+          <div class="dropDowmCls" v-if="betmorepopup === true">
+            <ul>
+              <li><a href="javascript:void(0)" @click="openFrm(1)"><p>投注记录</p></a></li>
+              <li><a href="javascript:void(0)" @click="openFrm(2)"><p>玩法介绍</p></a></li>
+              <li><a href="javascript:void(0)" @click="openFrm(3)"><p>充值</p></a></li>
+              <li><a href="javascript:void(0)" @click="openFrm(4)"><p>提款</p></a></li>
+            </ul>
+          </div>
+        </span>
       </div>
     </div>
 </template>
@@ -30,12 +41,15 @@ import lottoMethodGroup from '@/components/lotto-method-group'
 export default {
   data () {
     return {
-      aaa: ''
-      // currgroup: {}
+      betmorepopup: false
     }
   },
   props: {
     showright: {
+      type: Boolean,
+      default: false
+    },
+    showbetmore: {
       type: Boolean,
       default: false
     },
@@ -82,6 +96,10 @@ export default {
       default: function () {
         return []
       }
+    },
+    betlottoid: {
+      type: String,
+      default: ''
     }
   },
   methods: {
@@ -93,6 +111,14 @@ export default {
     },
     currGroupInfoClicked: function (currInfo) {
       this.$emit('currGroupInfoClicked', currInfo)
+    },
+    changeBetMore () {
+      this.betmorepopup = !this.betmorepopup
+    },
+    openFrm (id) {
+      if (id === 1) {
+        this.$router.push('/record/lotto/order?lotto_id=' + this.betlottoid)
+      }
     }
   },
   mounted () {
@@ -161,5 +187,60 @@ export default {
       background-size: cover;
     }
   }
+}
+
+.dropDowmCls {
+  position: fixed;
+  top: 1.1rem;
+  right: 0.3rem;
+  background: white;
+  width: 3.0rem;
+  padding: 0.1rem;
+  border: 1px solid rgba(0,0,0,.1);
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-radius: 0.3rem;
+  overflow: visible;
+  z-index: 10;
+  ul {
+    li {
+      border-bottom: 1px solid #dcdcdc;
+      a {
+        font-size: 0.4rem;
+        color: black;
+        display: block;
+        line-height: 1.0rem;
+        p {
+          background: url('../assets/imgs/home.svg') left 0.2rem no-repeat;
+          background-size: 0.3rem auto;
+          padding-left: 0.2rem;
+        }
+      }
+    }
+  }
+}
+
+.dropDowmCls:after {
+  content: '';
+  display: block;
+  width: 0;
+  border: 10px solid #fff;
+  border-right-color: transparent;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  position: absolute;
+  top: -19px;
+  right: 10px;
+}
+/*header 彈出框*/
+.dropIncreaseIdBack {
+  background: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 100%;
+}
+.positionFixed {
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 </style>

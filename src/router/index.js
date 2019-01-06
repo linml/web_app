@@ -78,6 +78,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: (resolve) => require(['@/pages/register'], resolve)
+    },
+    {
+      path: '/record/lotto/order',
+      name: 'lotto-order',
+      component: (resolve) => require(['@/pages/record/lotto-order'], resolve)
     }
   ]
 })

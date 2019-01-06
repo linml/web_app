@@ -12,10 +12,10 @@
       </div>
     <div class="this-page">
       <common-header headertype="methodgroup"
-                     :showmore="true"
+                     :showbetmore="true"
                      :mglist="methodGroupList"
                      :currgroup="currMethodGroup"
-                     :aaa="33334444"
+                     :betlottoid="lotto_id"
                      @currGroupInfoClicked="currGroupInfoClicked"></common-header>
       <div class="issue_info">
         <div class="info">

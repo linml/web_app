@@ -115,7 +115,9 @@ export default {
       }
     }
   },
-  created () {},
+  created () {
+    this.refreshInfos()
+  },
   mounted () {
     this.refreshInfos()
   },
@@ -157,11 +159,13 @@ export default {
           if (rsp.data.code === CODE_OK) {
             this.user = rsp.data.data
           } else if (rsp.data.code === CODE_NOT_LOGIN) {
-            MessageBox.alert('请先登录')
+            // MessageBox.alert('请先登录')
             this.$router.push('/login')
           } else if (rsp.data.code === CODE_LOGIN_EXPIRED) {
-            MessageBox.alert('请重新登录')
+            // MessageBox.alert('请重新登录')
             this.$router.push('/login')
+          } else {
+            MessageBox.alert(rsp.data.msg || '请求失败')
           }
         } else {}
       })

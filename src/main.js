@@ -9,7 +9,7 @@ import './assets/css/my-mint.scss'
 import router from './router'
 import * as filters from './filter/index'
 import { Swipe, SwipeItem } from 'vue-swipe';
-import { MessageBox, Cell } from 'mint-ui'
+import { MessageBox, Cell, Popup } from 'mint-ui'
 // import 'mint-ui/lib/style.css'
 import FastClick from 'fastclick'
 import '../static/js/flexible.js'
@@ -55,6 +55,7 @@ Vue.use(VueScroller)
 Vue.component('swipe', Swipe);
 Vue.component('swipe-item', SwipeItem);
 Vue.component(Cell.name, Cell);
+Vue.component(Popup.name, Popup);
 
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key]);

@@ -76,3 +76,17 @@ export const register1 = (params) => post(`${apiUrl}${API_V1}/register`, params)
  * @returns {*}
  */
 export const infos = (params) => fetch(`${apiUrl}${API_V1}/infos`, params)
+
+/**
+ * 游客登录
+ * @param params
+ * @returns {*}
+ */
+export const guestLogin = (params) => post(`${apiUrl}${API_V1}/login/guest`, params)
+
+/**
+ * 注单查询
+ * @param params
+ * @returns {*}
+ */
+export const findLottoOrder = (params) => fetch(`${apiUrl}${API_V1}/lotto/order`, params)
