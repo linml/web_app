@@ -90,3 +90,10 @@ export const guestLogin = (params) => post(`${apiUrl}${API_V1}/login/guest`, par
  * @returns {*}
  */
 export const findLottoOrder = (params) => fetch(`${apiUrl}${API_V1}/lotto/order`, params)
+
+/**
+ * 彩票列表
+ * @param params
+ * @returns {*}
+ */
+export const findCodeLottoList = (params) => fetch(`${apiUrl}${API_V1}/lotto/code/list`, params)

@@ -20,6 +20,7 @@
       </div>
       <div class="right-icon">
         <span v-if="showmore" class="icon"></span>
+        <span v-if="showordermore" @click="ordermorechecked">筛选</span>
         <span v-if="showbetmore" class="icon"  @click="changeBetMore">
           <div class="dropIncreaseIdBack positionFixed" v-if="betmorepopup === true"></div>
           <div class="dropDowmCls" v-if="betmorepopup === true">
@@ -46,6 +47,10 @@ export default {
   },
   props: {
     showright: {
+      type: Boolean,
+      default: false
+    },
+    showordermore: {
       type: Boolean,
       default: false
     },
@@ -111,6 +116,10 @@ export default {
     },
     currGroupInfoClicked: function (currInfo) {
       this.$emit('currGroupInfoClicked', currInfo)
+    },
+    ordermorechecked: function () {
+      console.log('eee')
+      this.$emit('ordermorechecked', '')
     },
     changeBetMore () {
       this.betmorepopup = !this.betmorepopup

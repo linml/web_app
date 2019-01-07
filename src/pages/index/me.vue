@@ -75,12 +75,12 @@ export default {
         {
           title: '投注记录',
           icon: 'tzjl',
-          path: '/record/bet'
+          path: '/record/lotto/order'
         },
         {
           title: '中奖记录',
           icon: 'zjjl',
-          path: ''
+          path: 'record/lotto/order?status=1'
         },
         {
           title: '充值记录',

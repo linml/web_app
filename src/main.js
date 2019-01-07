@@ -14,7 +14,12 @@ import { MessageBox, Cell, Popup } from 'mint-ui'
 import FastClick from 'fastclick'
 import '../static/js/flexible.js'
 import VueScroller from 'vue-scroller'
+import { DatetimePicker } from 'mint-ui';
+import { Radio } from 'mint-ui';
 
+Vue.component(Radio.name, Radio);
+
+Vue.component(DatetimePicker.name, DatetimePicker);
 
 /**
 *监听浏览器点击返回前进操作动画

@@ -83,6 +83,11 @@ export default new Router({
       path: '/record/lotto/order',
       name: 'lotto-order',
       component: (resolve) => require(['@/pages/record/lotto-order'], resolve)
+    },
+    {
+      path: '/record/lotto/order/detail',
+      name: 'lotto-order-detail',
+      component: (resolve) => require(['@/pages/record/order-detail'], resolve)
     }
   ]
 })
